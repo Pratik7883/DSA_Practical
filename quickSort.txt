@@ -1,62 +1,69 @@
-#include <stdio.h>
+#include<stdio.h>
 
-int Partition(int arr[], int low, int high) {
-    int pivot = arr[low];
-    int i = low + 1;
-    int j = high;
-
-    while (i < j) {
-        while (arr[i] <= pivot && i<high) {
-            i++;
-        }
-        while ( arr[j] > pivot && j>low) {
-            j--;
-        }
-        if (i < j) {
-            int temp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = temp;
-        }
-    }
-    int temp2 = arr[j];
-    arr[j] = arr[low];
-    arr[low] = temp2;
-    return j;
+int Partition(int Arr[],int low,int high)
+{
+    int i=low+1;
+    int pivot=Arr[low];
+    int j=high;
+    while(i<j)
+    {
+      while(Arr[i]<=pivot)
+      {
+        i++;
+      }
+      while(Arr[j]>pivot)
+      {
+       j--;
+      }
+      if(i<j)
+      {
+      int temp=Arr[i];
+      Arr[i]=Arr[j];
+      Arr[j]=temp;
+      }
+       }
+       int temp=Arr[j];
+       Arr[j]=pivot;
+       Arr[low]=temp;
+       return j;
 }
-
-void QuickSort(int arr[], int low, int high) {
-    if (low < high) {
-        int loc = Partition(arr, low, high);
-        QuickSort(arr, low, loc - 1);
-        QuickSort(arr, loc + 1, high);
-    }
+void QuickSort(int Arr[],int low,int high)
+{
+     if(low<high)
+     {
+     int loc=Partition(Arr,low,high);
+     QuickSort(Arr,low,loc-1);
+     QuickSort(Arr,loc+1,high);
+     
+     }
 }
+int main()
+{
+ int N,i;
+ printf("Enter the size of an Array:\n");
+ scanf("%d",&N);
+ int Arr[N];
+ printf("Enter the Array:\n");
+ for( i=0;i<N;i++)
+ {
+  scanf("%d",&Arr[i]);
+ } 
+ printf("The array before sorting:\n");
+ for( i=0;i<N;i++)
+ {
+   printf("%d ",Arr[i]);
+ }
+ printf("\n");
+ int low=0;
+ int high=N-1;
+ QuickSort(Arr,low,high);
+ printf("The array after sorting:\n");
+ for( i=0;i<N;i++)
+ {
+   printf("%d ",Arr[i]);
+   
+ }
 
-int main() {
-    int n;
-    printf("Enter the total elements in the Array: ");
-    scanf("%d", &n);
-    int arr[n];
-    printf("Enter the Array:\n");
-    for (int i = 0; i < n; i++) {
-        scanf("%d", &arr[i]);
-    }
-    printf("Array before Sorting:\n");
-    for (int i = 0; i < n; i++) {
-        printf("%d ", arr[i]);
-    }
-    printf("\n");
-
-    int low = 0;
-    int high = n - 1;
-    
-    QuickSort(arr, low, high);
-
-    printf("Array after Sorting:\n");
-    for (int i = 0; i < n; i++) {
-        printf("%d ", arr[i]);
-    }
-    printf("\n");
-
-    return 0;
+ getch();
+ return 0;   
 }
