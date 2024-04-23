@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <limits.h>
+
+#define MAX_VERTICES 100 // Maximum number of vertices
+
+void dijkstras(int v, int graph[MAX_VERTICES][MAX_VERTICES], int dist[], int total) {
+    int s[total];
+
+    for (int i = 0; i < total; i++) {
+        s[i] = 0;
+        dist[i] = (i == v) ? 0 : INT_MAX; // Initialize distances to infinity, except for the starting vertex
+    }
+
+    for (int i = 0; i < total - 1; i++) {
+        int u = -1;
+        for (int j = 0; j < total; j++) {
+            if (!s[j] && (u == -1 || dist[j] < dist[u])) {
+                u = j;
+            }
+        }
+        s[u] = 1;
+        for (int w = 0; w < total; w++) {
+            if (!s[w] && graph[u][w] && dist[w] > dist[u] + graph[u][w]) {
+                dist[w] = dist[u] + graph[u][w];
+            }
+        }
+    }
+}
+
+int main() {
+    int total, v;
+
+    printf("Enter the total number of vertices in the graph: ");
+    scanf("%d", &total);
+
+    if (total > MAX_VERTICES) {
+        printf("Error: Number of vertices exceeds maximum limit.\n");
+        return 1;
+    }
+
+    int graph[MAX_VERTICES][MAX_VERTICES];
+
+    printf("Enter the adjacency matrix:\n");
+    for (int i = 0; i < total; i++) {
+        for (int j = 0; j < total; j++) {
+            if (i == j) {
+                graph[i][j] = 0;
+            } else {
+                printf("Enter the weight between %d and %d: ", i, j);
+                scanf("%d", &graph[i][j]);
+            }
+        }
+    }
+
+    printf("Adjacency Matrix:\n");
+    for (int i = 0; i < total; i++) {
+        for (int j = 0; j < total; j++) {
+            printf("%d\t", graph[i][j]);
+        }
+        printf("\n");
+    }
+
+    int dist[MAX_VERTICES];
+    printf("Enter the starting vertex: ");
+    scanf("%d", &v);
+
+    dijkstras(v, graph, dist, total);
+
+    printf("Shortest distances from vertex %d:\n", v);
+    for (int i = 0; i < total; i++) {
+        printf("Vertex %d: %d\n", i, dist[i]);
+    }
+    return 0;
+}

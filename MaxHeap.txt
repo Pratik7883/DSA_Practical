@@ -1,0 +1,92 @@
+#include<stdio.h>
+#include<stdlib.h>
+void insertEle(int list[],int size)
+{
+    int i=size-1;
+    while(i>=1)
+    {
+        int parent=i/2;
+        if(list[parent]<list[i])
+        {
+            int temp=list[i];
+            list[i]=list[parent];
+            list[parent]=temp;
+            i=parent;
+        }
+        else
+        {
+            return;
+        }
+    }
+}
+void deleteEle(int list[],int size)
+{
+ int lasti=size-1;
+ int root=list[0];
+ list[0]=list[lasti];
+ lasti--;
+ int i=0;
+ while(i<=size/2)
+ {
+     int maxIndex=i;
+     int left=i*2+1;
+     int right=i*2+2;
+     if(left<=lasti &&list[left]>list[maxIndex])
+     {
+         maxIndex=left;
+     }
+     if(right<=lasti &&list[right]>list[maxIndex])
+     {
+         maxIndex=right;
+     }
+     if(maxIndex!=i)
+     {
+         int temp=list[i];
+         list[i]=list[maxIndex];
+         list[maxIndex]=temp;
+         i=maxIndex;
+     }
+     else
+     {
+         break;
+     }
+     
+ }
+}
+int main() {
+    int list[100];
+    int size = 0;
+    int ch;
+    do {
+        printf("Enter the choice:\n");
+        printf("1. Inserting in the Heap\n");
+        printf("2. Deleting in the Heap\n");
+        printf("0. Exit\n");
+        scanf("%d", &ch);
+        switch (ch) {
+            case 1:
+                printf("Enter the element which you want to insert in the heap:\n");
+                int num;
+                scanf("%d", &num);
+                list[size++] = num;
+                insertEle(list,size);
+                printf("Heap after insertion: ");
+                for (int i = 0; i < size; i++) {
+                    printf("%d ", list[i]);
+                }
+                printf("\n");
+                break;
+                
+            case 2:
+                   deleteEle(list,size);
+                   size--;
+                printf("Heap after deletion: ");
+                for (int i = 0; i < size; i++) {
+                    printf("%d ", list[i]);
+                }
+                printf("\n");
+                   break;
+        }
+    }while(ch!=0);
+    return 0;
+}

@@ -1,0 +1,165 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+
+struct node
+{
+  int data;
+  struct node*next;  
+};
+struct node*rear=NULL;
+struct node*front=NULL;
+struct node*top=NULL;
+void enqueue(int value)
+{
+    struct node*newNode=(struct node*)malloc(sizeof(struct node));
+    newNode->data=value;
+    newNode->next=NULL;
+    if(front==NULL&&rear==NULL)
+    {
+        front=rear=newNode;
+    }
+    else
+    {
+        rear->next=newNode;
+    }
+    
+    
+}
+void dequeue()
+{
+    if(front==NULL)
+    {
+        printf("The queue is empty..\n");
+    }
+    else
+    {
+        struct node*temp=front;
+        front=front->next;
+        free(temp);
+    }
+    if(front==NULL)
+    {
+        rear=NULL;
+    }
+}
+void BFS(int start,int N,int graph[N][N])
+{
+    int visited[N];
+    for(int i=0;i<N;i++)
+    {
+        visited[i]=0;
+    }
+    enqueue(start);
+    visited[start]=1;
+    while(front!=NULL)
+    {
+        int current=front->data;
+        printf("%d ",current);
+        dequeue();
+        for(int i=0;i<N;i++)
+        {
+            if(graph[current][i]==1&&visited[i]==0)
+            {
+                enqueue(i);
+                visited[i]=1;
+            }
+        }
+    }
+}
+void push(int value)
+{
+    struct node*newNode=(struct node*)malloc(sizeof(struct node));
+    newNode->data=value;
+    newNode->next=NULL;
+    if(top==NULL)
+    {
+        top=newNode;
+    }
+    else
+    {
+        newNode->next=top;
+        top=newNode;
+    }
+}
+void pop()
+{
+    if(top==NULL)
+    {
+        printf("The stack is empty:");
+        
+    }
+    else
+    {
+        struct node*temp=top;
+        top=top->next;
+        free(temp);
+    }
+}
+void DFS(int start,int N,int graph[N][N])
+{
+    int visited[N];
+    for(int i=0;i<N;i++)
+    {
+        visited[i]=0;
+    }
+    push(start);
+    visited[start]=1;
+    while(top!=NULL)
+    {
+        int current=top->data;
+        printf("%d ",current);
+        pop();
+        for(int i=0;i<N;i++)
+        {
+            if(graph[current][i]==1&&visited[i]==0)
+            {
+                push(i);
+                visited[i]=1;
+            }
+        }
+    }
+}
+
+int main()
+{
+    int N,start;
+    printf("Enter the total number of vertex in the graph:\n");
+    scanf("%d",&N);
+    int graph[N][N];
+    printf("Enter the adjecency matrix:\n");
+    for(int i=0;i<N;i++)
+    {
+        for(int j=0;j<N;j++)
+        {
+            if(i==j)
+            {
+                graph[i][j]=0;
+            }
+            else
+            {
+            printf("Enter the connectivity between %d and %d:",i,j);
+            scanf("%d",&graph[i][j]);
+            graph[j][i]=graph[i][j];
+            }
+        }
+    }
+    printf("The adjecency matrix is:\n");
+    for(int i=0;i<N;i++)
+    {
+        for(int j=0;j<N;j++)
+        {
+         printf("%d ",graph[i][j]);   
+        }
+        printf("\n");
+    }
+    
+    printf("Enter the value of the starting vertex:\n");
+    scanf("%d",&start);
+    printf("Bfs starting from %d:",start);
+    BFS(start,N,graph);
+    printf("dfs starting from %d:",start);
+    DFS(start,N,graph);
+    
+    return 0;
+}

@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+int N;
+int board[100][100]; // Assuming a maximum size for the board
+
+void printBoard() {
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            printf("%d ", board[i][j]);
+        }
+        printf("\n");
+    }
+    printf("\n");
+}
+
+bool isSafe(int row, int col) {
+    for (int i = 0; i < col; i++) {
+        if (board[row][i])
+            return false;
+    }
+    for (int i = row, j = col; i >= 0 && j >= 0; i--, j--) {
+        if (board[i][j])
+            return false;
+    }
+    for (int i = row, j = col; i < N && j >= 0; i++, j--) {
+        if (board[i][j])
+            return false;
+    }
+    return true;
+}
+
+bool nQueenSolve(int col) {
+    if (col >= N) {
+        printBoard();
+        return true;
+    }
+    bool res = false; // Declare and initialize res
+    for (int i = 0; i < N; i++) {
+        if (isSafe(i, col)) {
+            board[i][col] = 1;
+            res = (nQueenSolve(col + 1) || res);
+            board[i][col] = 0;
+        }
+    }
+    return false;
+}
+
+int main() {
+    printf("Enter the value of N: ");
+    scanf("%d", &N);
+
+   
+
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            board[i][j] = 0;
+        }
+    }
+    nQueenSolve(0);
+    return 0;
+}
